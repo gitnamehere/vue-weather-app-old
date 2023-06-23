@@ -1,55 +1,60 @@
 <script setup lang="ts">
-import axios from 'axios'
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import Searchbar from '@/components/LocationSearchbar.vue';
 </script>
 
 <template>
-    <main>
+    <div class="background" ></div>
+    <div class="container">
         <h1>A Vue Weather App</h1>
-        <form class="searchbar">
-            <input type="text" placeholder="Enter your city" />
-            <button type="submit">
-                <font-awesome-icon :icon="['fas', 'magnifying-glass']" style="color: #242;" size="xl" />
-            </button>
-        </form>
-  </main>
+        <div class="searchBar">
+            <Searchbar />
+        </div>
+        <div class="weatherApiLink">
+            <a href="https://open-meteo.com/">Weather data by Open-Meteo.com</a>
+        </div>
+    </div>
 </template>
 
 <style scoped>
-    h1 {
-    font-weight: 500;
-    font-size: 2.6rem;
-    }
-
-    .searchbar {
-    margin-top: 2rem;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    border-radius: 100px;
-    font-size: 1.2rem;
-    padding-left: 5%;
-    height: 3rem;
+    .container {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    
+    width: 100vw;
+    height: 100vh;
+    margin: auto;
     }
 
-    .searchbar input {
-    border-radius: 100px;
-    border: none;
-    outline: none;
-    font-size: 1.2rem;
-    height: 100%;
-    width: 89%;
+    h1 {
+    margin-top: -5rem;
+
+    font-weight: 500;
+    font-size: 2.6rem;
+    text-align: center;
     }
 
-    .searchbar button {
-    border-radius: 100px;
+    .weatherApiLink {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    text-align: center;
+    }
+
+    .searchBar {
+    margin-top: 1rem;
+    width: 60%;
+    }
+
+    .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+
+    width: 100vw;
+    height: 100vh;
+
     background-color: transparent;
-    border: none;
-    height: 100%;
-    width: 10%;
-    margin-top: 0;
-    padding-top: 0%;
     }
-
 </style>
