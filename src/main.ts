@@ -1,4 +1,5 @@
 import './assets/main.css'
+import './assets/weather-icons/css/weather-icons.min.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -10,9 +11,9 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass, faWind } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faMagnifyingGlass)
+library.add(faMagnifyingGlass, faWind)
 
 const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)
 
