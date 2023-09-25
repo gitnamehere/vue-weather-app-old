@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { useWeatherStore } from '@/stores/weather';
-import parseWeatherCode from '../utils/weatherCodes';
+
 import Searchbar from '@/components/LocationSearchbar.vue';
+import WeatherDailyContainer from '@/components/WeatherDailyContainer.vue';
 
 const weatherStore = useWeatherStore();
 
@@ -29,14 +30,14 @@ const { weather, geocoding, weatherConditions } = storeToRefs(weatherStore);
             </div>
         </div>
 
-        <div class="body">
-            <div v-if="geocoding" class="location">
+        <div v-if="weather" class="body">
+            <div class="location">
                 <h1>{{geocoding.name}} {{geocoding.admin1}}</h1>
                 <h2>{{geocoding.country}}</h2>
             </div>
-            <div v-if="weather" class="current-weather-container">
+            <div class="current-weather-container">
                 <div class="current-conditions-container">
-                    <i class="current-conditions wi" :class="weatherConditions.icon"></i>
+                    <i class="current-conditions current-conditions-icon wi" :class="weatherConditions.icon"></i>
                     <text class="current-conditions">{{ weatherConditions.description }}</text>
                 </div>
                 <div class="current-temperature-container">
@@ -55,11 +56,13 @@ const { weather, geocoding, weatherConditions } = storeToRefs(weatherStore);
                     <text class="min-max-temperature"><font-awesome-icon :icon="['fas', 'wind']" />: {{weather.current_weather.windspeed}}mph {{weather.current_weather.winddirection}}°</text>
                 </div>
             </div>
-            <div v-else>
+            <WeatherDailyContainer />
+        </div>
+
+        <div v-else class="body">
                 <h1>404 Not Found</h1>
                 <text>This means you either reloaded the page, the location you searched could not be found, or an error occured.</text>
             </div>
-        </div>
         <footer class="footer">
             <text>This is the weather page. (under development)</text>
             <a href="https://open-meteo.com/" style="color: #f8f8f8;"><u>Weather data by Open-Meteo.com</u></a>
@@ -85,9 +88,9 @@ const { weather, geocoding, weatherConditions } = storeToRefs(weatherStore);
         align-items: center;
         justify-content: space-around;
 
-        width: 100vw;
-        padding: 1rem 5rem;
         margin-bottom: 1rem;
+        width: 100vw;
+        padding: 1rem 10rem;
 
         background: #0f406e;
         box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.4);
@@ -108,7 +111,6 @@ const { weather, geocoding, weatherConditions } = storeToRefs(weatherStore);
         justify-content: start;
 
         height: auto;
-        padding: 0 2%;
     }
 
     .location {
@@ -149,6 +151,10 @@ const { weather, geocoding, weatherConditions } = storeToRefs(weatherStore);
         font-size: 1.5rem;
         font-weight: 500;
         line-height: 2rem;
+    }
+
+    .current-conditions-icon {
+        font-size: 2rem;
     }
 
     .current-temperature-container {
@@ -226,6 +232,11 @@ const { weather, geocoding, weatherConditions } = storeToRefs(weatherStore);
             width: 95%;
         }
 
+        .current-conditions-icon {
+            margin-bottom: 1rem;
+            font-size: 3rem;
+        }
+
         .current-temperature-container {
             margin: 0;
         }
@@ -256,7 +267,7 @@ const { weather, geocoding, weatherConditions } = storeToRefs(weatherStore);
     /* Day: 2885dd */
     /* Night: 111128 */
     .background {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: -1;

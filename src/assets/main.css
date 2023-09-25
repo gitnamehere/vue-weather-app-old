@@ -29,3 +29,14 @@ a,
     width: 100%;
   }
 }
+
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #AAA2;
+  border-radius: 8px;
+}

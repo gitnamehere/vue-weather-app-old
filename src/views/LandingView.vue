@@ -22,9 +22,9 @@ import Searchbar from '@/components/LocationSearchbar.vue';
     justify-content: center;
     align-items: center;
     
+    margin: auto;
     width: 100vw;
     height: 100vh;
-    margin: auto;
     }
 
     h1 {
@@ -43,7 +43,7 @@ import Searchbar from '@/components/LocationSearchbar.vue';
 
     .searchBar {
     margin-top: 1rem;
-    width: 60%;
+    width: 50%;
     }
 
     .background {

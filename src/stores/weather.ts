@@ -17,8 +17,23 @@ export const useWeatherStore = defineStore('weather', () => {
   const weather = ref(); // This will be a JSON object based on the API's current_weather response, or error
   const weatherConditions = ref(); // This will be a JSON object for the current weather conditions, using parseWeatherCode()
 
+  const locations = ref();
+
   const setLocation = (locationSearch: string) => {
     location.value = locationSearch;
+  };
+
+  const getLocations = async (locationSearch: string) => {
+    axios
+      .get(`${GEOCODING_API_URL}search?name=${locationSearch}&count=10&language=en&format=json`)
+      .then((res) => {
+        locations.value = res.data.results;
+        console.log(res.data.results);
+      })
+      .catch((err) => {
+        console.log(err);
+        locations.value = null;
+      });
   };
 
   const getWeather = async () => {
@@ -34,33 +49,41 @@ export const useWeatherStore = defineStore('weather', () => {
         console.log(err);
         geocoding.value = null;
         weather.value = null;
-      });
+      })
+    };
 
+  const getWeatherByCoords = (location: any) => {
+    longitude.value = location.longitude;
+    latitude.value = location.latitude;
+    geocoding.value = location;
+    getWeatherData();
+  };
+    
   const getWeatherData = () => {
-
     const requestUrl = `${API_URL}forecast` + 
       `?latitude=${latitude.value}` +
       `&longitude=${longitude.value}` +
       `&current_weather=true` +
-      `&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset` +
+      `&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset` +
       `&temperature_unit=${temperature_unit.value}` +
       `&windspeed_unit=mph` + 
       `&precipitation_unit=inch` +
-      `&timezone=auto`;
+      `&timezone=auto` +
+      `&forecast_days=10`;
 
     axios
       .get(requestUrl)
       .then((res) => {
-          weather.value = res.data;
-          weatherConditions.value = parseWeatherCode({ code: weather.value.current_weather.weathercode, isDay: weather.value.current_weather.is_day });
+        console.log(res.data);
+        weather.value = res.data;
+        weatherConditions.value = parseWeatherCode({ code: weather.value.current_weather.weathercode, isDay: weather.value.current_weather.is_day });
       })
       .catch((err) => {
         console.log(err);
         geocoding.value = null;
         weather.value = null;
       });
-    };
-  }
+  };
 
-  return { location, longitude, latitude, temperature_unit, weather, geocoding, weatherConditions, getWeather, setLocation }
+  return { location, locations, longitude, latitude, temperature_unit, weather, geocoding, weatherConditions, getWeather, getWeatherByCoords, getLocations, setLocation }
 })
