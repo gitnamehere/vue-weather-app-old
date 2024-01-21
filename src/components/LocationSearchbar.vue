@@ -31,91 +31,107 @@ const getWeatherByCoords = (location: any) => {
     weatherStore.getWeatherByCoords(location);
     router.push('/weather');
 };
-
 </script>
 
 <template>
     <div>
-        <div class="searchbar">
-            <input v-model="location" placeholder="Enter a city or zip code" @keyup.stop="getLocations" @keyup.enter="getWeather"/>
-            <button @click="getWeather">
-            <font-awesome-icon :icon="['fas', 'magnifying-glass']" style="color: #282;" size="xl" />
+        <div class="location-searchbar">
+            <input
+                v-model="location"
+                class="location-searchbar__input"
+                placeholder="Enter a city or zip code"
+                @keyup.stop="getLocations"
+                @keyup.enter="getWeather"
+            />
+            <button class="location-searchbar__button" @click="getWeather">
+            <font-awesome-icon 
+                :icon="['fas', 'magnifying-glass']" 
+                style="color: #282;" 
+                size="xl"
+            />
             </button>
         </div>
-        <div v-if="locationsSearched" class="location-list-container">
-            <div v-for="location in locations"  @click="getWeatherByCoords(location)" class="location-list-item">
-                <text>{{ location.name }}, {{ location.admin1 }}</text>
+        <div v-if="locationsSearched" class="location-searchbar__list">
+            <div 
+                v-for="location in locations"  
+                :key=location 
+                class="location-searchbar__list-item"
+                @click="getWeatherByCoords(location)"
+            >
+                <p>
+                    {{ location.name }}, {{ location.admin1 }}
+                </p>
             </div>
         </div>
     </div>
 </template>
 
-<style scoped>
-    h1 {
-    font-weight: 500;
-    font-size: 2.6rem;
-    text-align: center;
-    }
+<style scoped lang="scss">
+    .location-searchbar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-    .searchbar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: 1px solid #ccc;
-    border-radius: 16px;
-    height: 3rem;
-    width: 100%;
-    padding: 10px;
-
-    background-color: #fff;
-
-    font-size: 1.2rem;
-    }
-
-    .searchbar input {
-    border: none;
-    height: 100%;
-    width: 89%;
-
-    outline: none;
-    font-size: 1.2rem;
-    }
-
-    .searchbar button {
-    margin: auto;
-    margin-right: 0;
-    border: none;
-    border-radius: 100px;
-    height: 100%;
-    width: auto;
-
-    background-color: transparent;
-    }
-
-    .location-list-container {
-    position: absolute;
-
-    margin-top: 1rem;
-    border-radius: 8px;
-
-    background-color: white;
-    color: #000;
-    }
-
-    .location-list-item {
-        margin-bottom: 2px;
-        border-bottom: 1px solid #000;
+        border: 1px solid #ccc;
+        border-radius: 16px;
+        height: 3rem;
         width: 100%;
-        height: 100%;
-        padding: 0.5rem 1rem;
-    }
-    
-    .location-list-container :last-child {
-        border-bottom: none;
-    }
+        padding: 10px;
 
-    .location-list-item :hover{
-        background-color: #ccc;
+        background-color: #fff;
+
+        font-size: 1.2rem;
+
+        &__input {
+            border: none;
+            height: 100%;
+            width: 95%;
+
+            outline: none;
+            font-size: 1.2rem;
+        }
+
+        &__button {
+            margin: auto;
+            margin-right: 0;
+            border: none;
+            border-radius: 100px;
+            height: 100%;
+
+            background-color: transparent;
+        }
+
+        &__list {
+            position: absolute;
+
+            margin-top: 1rem;
+            border-radius: 8px;
+
+            background-color: white;
+            color: #000;
+        }
+
+        &__list-item {
+            border-bottom: 1px solid #000;
+            width: 100%;
+            height: 100%;
+            padding: 0.5rem 1rem;
+
+            &:last-of-type {
+                border-bottom: none;
+            }
+
+            &:hover{
+                background-color: #ccc;
+
+                &:first-of-type {
+                    border-radius: 8px 8px 0 0;
+                }
+
+                &:last-of-type {
+                    border-radius: 0 0 8px 8px;
+                }
+            }
+        }
     }
 </style>
